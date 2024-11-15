@@ -120,3 +120,7 @@ This project utilizes the word list from the following sources:
 - [English Words from dwyl/english-words](https://github.com/dwyl/english-words)
 
 These resources have been invaluable in the development of this project.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
