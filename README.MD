@@ -4,8 +4,7 @@ OCR Librarian is a Linux C++ CLI program that allows users to quickly and effici
 Supports the Following image formats:
 * .jpg, .jpeg, .png, .bmp, .tiff, .tif, .ppm, .pgm, .pbm, .jp2, .webp
 
-
-
+![alt text](https://github.com/zzz-Ricky/OCR-librarian/blob/main/images/OCRLibDemo.gif?raw=true)
 
 
 # OCRLibrarian Installation Guide
