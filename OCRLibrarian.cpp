@@ -7,11 +7,14 @@
 #include <iostream>
 #include <filesystem>
 
-// Function to fetch the current working directory
+// Global Variables
+const char *dir_path;
+int rename_mode;
 
 // Function to print ASCII art
 void print_ascii_art(const int argc, const char *dir_path)
 {
+    std::cout << '\n';
     std::cout << "  ,ad8888ba,      ,ad8888ba,   88888888ba                       " << std::endl;
     std::cout << " d8\"'    `\"8b    d8\"'    `\"8b  88      \"8b                     " << std::endl;
     std::cout << "d8'        `8b  d8'            88      ,8P                     " << std::endl;
@@ -58,8 +61,9 @@ void process_image(const char *image_path, int rename_mode)
 {
     // Construct the command to run OCR on the image file
     char command[1024];
-    snprintf(command, sizeof(command), "./OCR \"%s\" %d", image_path, rename_mode); // Pass rename_mode as an argument
-    system(command);                                                                // Execute the command
+    std::cout << "Attempting to pass " << image_path << "to OCRLibEngine...\n";
+    snprintf(command, sizeof(command), "OCRLibEngine \"%s\" %d", image_path, rename_mode);
+    system(command); // Execute the command
 }
 
 // Function to scan the directory for image files
@@ -100,6 +104,26 @@ void scan_directory(const char *dir_path, int rename_mode)
     closedir(dir);
 }
 
+void setRenameMode(std::string input)
+{
+    try
+    {
+        rename_mode = std::stoi(input);
+        std::cout << "Rename mode set to " << rename_mode << "\n"
+                  << std::endl;
+    }
+    catch (const std::invalid_argument &e)
+    {
+        std::cerr << "Invalid input: not a number. Exitting..." << std::endl;
+        exit(1);
+    }
+    catch (const std::out_of_range &e)
+    {
+        std::cerr << "Invalid input: number out of range. Exitting..." << std::endl;
+        exit(1);
+    }
+}
+
 void displayHelp()
 {
     std::cout << "\nOCRLib Usage:\n";
@@ -121,7 +145,6 @@ void displayHelp()
 
 int main(int argc, char *argv[])
 {
-    const char *dir_path;
 
     if (argc > 1)
     {
@@ -140,44 +163,37 @@ int main(int argc, char *argv[])
     {
         dir_path = "."; // Use current directory if no argument is provided
     }
-
-    // Display the ASCII art
-    print_ascii_art(argc, dir_path);
-
-    // Prompt user for rename_mode (an integer)
-    std::string input;
-    int rename_mode;
-    std::cout << "Please enter a rename mode: " << std::endl;
-    std::cout << "Rename to the full OCR result with underscores: (0)" << std::endl;
-    std::cout << "Rename to the Longest word found: (1)" << std::endl;
-    std::cin >> input; // Take user input for rename_mode
-
-    if (input == "--help")
+    if (argc == 3)
     {
-        displayHelp();
-        return 0;
+        print_ascii_art(argc, dir_path);
+        setRenameMode(argv[2]);
     }
     else
     {
-        try
+        // Display the ASCII art
+        print_ascii_art(argc, dir_path);
+
+        // Prompt user for rename_mode (an integer)
+        std::string input;
+        std::cout << "Please enter a rename mode: " << std::endl;
+        std::cout << "Rename to the full OCR result with underscores: (0)" << std::endl;
+        std::cout << "Rename to the Longest word found: (1)" << std::endl;
+        std::cin >> input; // Take user input for rename_mode
+
+        if (input == "--help")
         {
-            rename_mode = std::stoi(input);
-            std::cout << "Rename mode set to " << rename_mode << std::endl;
+            displayHelp();
+            return 0;
         }
-        catch (const std::invalid_argument &e)
+        else
         {
-            std::cerr << "Invalid input: not a number. Exitting..." << std::endl;
-            exit(1);
-        }
-        catch (const std::out_of_range &e)
-        {
-            std::cerr << "Invalid input: number out of range. Exitting..." << std::endl;
-            exit(1);
+            setRenameMode(input);
         }
     }
 
+    std::cout << "\nInitializing Directory Read\n";
     // Start scanning the directory for image files and process with OCR
     scan_directory(dir_path, rename_mode);
-
+    std::cout << "\nOCR Librarian has completed running." << std::endl;
     return 0;
 }
