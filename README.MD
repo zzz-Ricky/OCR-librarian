@@ -117,6 +117,8 @@ exists on your system.
 This project utilizes the word list from the following sources:
 
 - [English Words from dwyl/english-words](https://github.com/dwyl/english-words)
+- [OpenCV](https://github.com/opencv/opencv)
+- [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
 
 These resources have been invaluable in the development of this project.
 
