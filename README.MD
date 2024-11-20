@@ -79,10 +79,10 @@ If you wish to uninstall the program at any time, simply delete the binaries and
 ```bash
 sudo rm /usr/local/bin/OCRLib
 sudo rm /usr/local/bin/OCRLibEngine
-sudo rm -r /usr/local/myprogram
+sudo rm -r /usr/local/OCRLibrarian
 ```
 ### Notes:
-Ensure that OCRVocabulary.txt is in the correct location (/usr/local/myprogram/) as required by the program.
+Ensure that OCRVocabulary.txt is in the correct location (/usr/local/OCRLibrarian/) as required by the program.
 You can modify the OCRLibrarian.sh script to change the installation paths if necessary.
 
 ### Troubleshooting
